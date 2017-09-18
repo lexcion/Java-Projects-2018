@@ -1,0 +1,80 @@
+package ticTacToe;
+
+import java.util.Scanner;
+
+public class TicTacToe {
+	
+	int[][] board = new int [3][3];
+	final int XTURN = 0;
+	final int OTURN = 1;
+	final int BLANK = 0;
+	final int XMOVE = 1;
+	final int OMOVE = 2;
+	int turn = XTURN;
+	Scanner scanner;
+	String input = "";
+	
+	public TicTacToe() {
+		printBoard();
+		scanner = new Scanner(System.in);
+		boolean playing = true;
+		
+		while(checkWin(XMOVE) == false && checkWin(OMOVE) == false && checkTie){
+		input = scanner.nextLine();
+		if (input.length() !=2){
+			System.out.println("Please enter the coordinates (letter + number)");
+		}
+		else if (input.charAt(0) != 'a'
+				&& input.charAt(0) != 'b'
+				&& input.charAt(0) != 'c'){
+			System.out.println("eligible rows are a,b, and c");
+		}
+		else if (input.charAt(1) != '1'
+				&& input.charAt(1) != '2'
+				&& input.charAt(1) != '3'){
+			System.out.println("eligible columns are 1,2, and 3");
+		}
+		else {
+			int row = input.charAt(0) - 'a';
+			int column = input.charAt(1) - '1';
+			System.out.println(row + "," + column);
+		}
+	}
+		if (checkWin() == true){
+			System.out.println("x wins");
+		}
+}
+	//TODO create checkWin and checkTie
+	public boolean checkWin() {
+		if (board[0][0] == XMOVE && board [0][1] == XMOVE && board [0][2] == XMOVE)
+		{
+		return true;
+	}
+		return false;
+	}
+	
+	public void printBoard() {
+		System.out.println(" \t1\t2\t3");
+		for(int row = 0; row < board.length; row++){
+			String output = (char)('a' + row) + "\t";
+			for (int column = 0; column < board[0].length; column++){
+				if (board[row][column] == BLANK){
+					output += " \t";
+				}
+				else if (board[row][column] == XMOVE){
+					output += "X\t";
+				}
+				else if (board[row][column] == OMOVE){
+					output += "O\t";
+				}
+			}
+			System.out.println(output);
+		}
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new TicTacToe();
+	}
+
+}
