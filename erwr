@@ -1,0 +1,80 @@
+package binaryToDecimal;
+
+import java.util.Scanner;
+
+public class DecimalBinary {
+	
+	Scanner scanner;
+	
+	public DecimalBinary() {
+		scanner = new Scanner(System.in);
+		System.out.println("Welcome to the Binary/Decimal Converter");
+		System.out.println("Choose options 1 or 2");
+		System.out.println("1. Convert binary to decimal");
+		System.out.println("2. Convert decimal to binary");
+		inputCheck();
+	}
+	public void inputCheck(){
+		String input = scanner.nextLine();
+		if(input.equals("1") == true) {
+		countOne();
+	}
+		else if(input.equals("2") == true) {
+		countTwo();
+	}
+		else{
+			System.out.println("sorry i didnt understand that");
+			inputCheck();
+			}
+	}
+	
+	void countOne() {
+		System.out.println("enter a binary number");
+		String input = scanner.nextLine();
+		System.out.println(Integer.parseInt(input,2));
+		System.out.println("would you like to try again?");
+		reTry();
+		}
+
+	void countTwo() {
+		System.out.println("enter a decimal (positive integer)");
+		int input2;
+		input2 = scanner.nextInt();
+		System.out.println(Integer.toBinaryString(input2));
+		System.out.println("would you like to try again?");
+		reTry();
+	
+	}
+	
+	void reTry() {
+		String YorN = scanner.nextLine();
+		if (YorN.equals("yes")|| YorN.equals ("y")){
+			System.out.println("Welcome to the Binary/Decimal Converter");
+			System.out.println("Choose options 1 or 2");
+			System.out.println("1. Convert binary to decimal");
+			System.out.println("2. Convert decimal to binary");
+			inputCheck();
+		}
+		else if(YorN.equals ("no") || YorN == "n"){
+			System.out.println("Welcome to the Binary/Decimal Converter");
+			System.out.println("Choose options 1 or 2");
+			System.out.println("1. Convert binary to decimal");
+			System.out.println("2. Convert decimal to binary");
+			inputCheck();
+			}
+		else {
+			System.out.println("Welcome to the Binary/Decimal Converter");
+			System.out.println("Choose options 1 or 2");
+			System.out.println("1. Convert binary to decimal");
+			System.out.println("2. Convert decimal to binary");
+			inputCheck();
+		}
+	}
+	
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new DecimalBinary();
+	}
+
+}
