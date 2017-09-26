@@ -10,6 +10,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class GUITicTacToe implements ActionListener{ 
 	
@@ -18,6 +19,10 @@ public class GUITicTacToe implements ActionListener{
 	Container center = new Container();
 	JLabel xname = new JLabel("X wins");
 	JLabel oname = new JLabel("O wins");
+	JButton xChangeName = new JButton("Change name (X)");
+	JButton oChangeName = new JButton("Change name (O)");
+	JTextField xChangeField = new JTextField();
+	JTextField oChangeField = new JTextField();
 	Container north = new Container();
 	
 	public GUITicTacToe(){
@@ -29,6 +34,7 @@ public class GUITicTacToe implements ActionListener{
 			for (int j = 0; j < button.length; j++) {
 				button[j][i] = new JButton(j+","+i);
 				center.add(button[j][i]);
+				button[j][i].addActionListener(this);
 				
 			}
 		}
@@ -37,6 +43,10 @@ public class GUITicTacToe implements ActionListener{
 		north.setLayout(new GridLayout(1,2));
 		north.add(xname);
 		north.add(oname);
+		north.add(oChangeName);
+		north.add(xChangeName);
+		north.add(xChangeField);
+		north.add(oChangeField);
 		frame.add(north, BorderLayout.NORTH);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
