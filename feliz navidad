@@ -1,0 +1,60 @@
+package tictactoeGUI;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class GUITicTacToe implements ActionListener{ 
+	
+	JFrame frame = new JFrame();
+	JButton[][] button = new JButton[3][3];
+	Container center = new Container();
+	JLabel xname = new JLabel("X wins");
+	JLabel oname = new JLabel("O wins");
+	Container north = new Container();
+	
+	public GUITicTacToe(){
+
+		frame.setSize(400, 400);
+		frame.setLayout(new BorderLayout());
+		center.setLayout(new GridLayout(3,3));
+		for (int i = 0; i < button.length; i++) {
+			for (int j = 0; j < button.length; j++) {
+				button[j][i] = new JButton(j+","+i);
+				center.add(button[j][i]);
+				
+			}
+		}
+		frame.add(center, BorderLayout.CENTER);
+		
+		north.setLayout(new GridLayout(1,2));
+		north.add(xname);
+		north.add(oname);
+		frame.add(north, BorderLayout.NORTH);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		
+		
+	}
+
+	public static void main(String[] args) {
+		new GUITicTacToe();
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
