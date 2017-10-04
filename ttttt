@@ -1,0 +1,28 @@
+import java.util.Scanner;
+
+public class DecimalBinaryTree {
+	
+	public DecimalBinaryTree() {
+		System.out.println("Enter \"file\" to enter a file or \"input\" to use console");
+		Scanner scanner = new Scanner(System.in);
+		String input = scanner.nextLine();
+		if(input.equals("file")) { //input from file
+			try {
+				System.out.println("Enter file name");
+				input = scanner.nextLine();
+				Scanner ScanFile = new Scanner(new File(input));
+				numberInput = ScanFile.nextLine
+			}
+		}
+		else { //input from console
+			
+		}
+		scanner.close();
+	}
+
+	public static void main(String[] args) {
+		new DecimalBinaryTree();
+
+	}
+
+}
