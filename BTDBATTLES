@@ -1,0 +1,92 @@
+package binaryToDecimal;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class DecimalBinaryTree {
+	
+	public DecimalBinaryTree() {
+		System.out.println("Enter \"file\" to enter a file or \"input\" to use console");
+		Scanner scanner = new Scanner(System.in);
+		String numberInput = "";
+		String input = scanner.nextLine();
+		if(input.equals("file")) { //input from file
+			try {
+				System.out.println("Enter file name");
+				input = scanner.nextLine();
+				Scanner ScanFile = new Scanner(new File(input));
+				numberInput = ScanFile.nextLine();
+				System.out.println(numberInput);
+				System.out.println("\"dtb\" or \"btd\"");
+				input = scanner.nextLine();
+				if (input.equals("dtb")) {
+					String answer = "";
+					int number = Integer.parseInt(numberInput);
+					while (number > 0){
+						if (number % 2 == 1){
+							answer = "1" + answer;
+						}
+						number = number / 2;
+					}
+					System.out.println(answer);
+				}
+				else if (input.equals("btd")){
+					int answer = 0, mole = 0;
+					int number = Integer.parseInt(numberInput);
+					System.out.println(number);
+					for (int i = 0; i < numberInput.length(); i++) {
+						answer+=((number%10)*Math.pow(2, mole));
+						number = number/10;
+						mole++;
+						
+					}
+					System.out.println(answer);
+					
+					}
+				scanner.close();
+			}
+			
+			catch (IOException ex){
+				System.out.println("File not found");
+				scanner.close();
+				System.exit(0);
+			}
+		}
+		if (input.equals("input")){ 
+			System.out.println("enter number to convert");
+			numberInput = scanner.nextLine();
+			//input from console
+		
+		System.out.println("\"dtb\" or \"btd\"");
+		input = scanner.nextLine();
+		if (input.equals("dtb")) {
+			String answer = "";
+			int number = Integer.parseInt(numberInput);
+			while (number >0){
+				if (number % 2 == 1){
+					answer = "1" + answer;
+				}
+				number = number / 2;
+			}
+			System.out.println(answer + " " + number);
+		}
+		else if (input.equals("btd")){
+			int answer = 0;
+			for( int a = input.length() - 1; a>= 0; a--){
+				if (numberInput.charAt(a)== '1'){
+					answer = answer  + (int)(Math.pow(2, a));
+					System.out.println(answer);
+				}
+			}
+		}
+		}
+		scanner.close();
+	}
+	
+
+	public static void main(String[] args) {
+		new DecimalBinaryTree();
+
+	}
+
+}
