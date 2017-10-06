@@ -1,0 +1,76 @@
+package conwaysLife;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class Life implements MouseListener{
+	
+	boolean[][] cells = new boolean[10][10];
+	JFrame frame = new JFrame("Life simulation");
+	LifePanel panel = new LifePanel(cells);
+	Container south = new Container();
+	JButton step = new JButton("Step");
+	JButton start = new JButton("Start");
+	JButton stop = new JButton ("Stop");
+	
+	
+	public Life (){
+		frame.setSize(600,600);
+		frame.setLayout(new BorderLayout());
+		frame.add(panel, BorderLayout.CENTER);
+		panel.addMouseListener(this);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+
+	public static void main(String[] args) {
+
+		new Life();
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent event) {
+		// TODO Auto-generated method stub
+		System.out.println(event.getX() + ", " + event.getY());
+		double width = (double)panel.getWidth() / cells[0].length;
+		double height = (double)panel.getHeight() / cells[0].length;
+		int column = (int)(event.getX() / width);
+		int row = (int)(event.getY()/height);
+		System.out.println(column + ", " + row);
+		cells[row][column]= !cells[row][column];
+		frame.repaint();
+		
+	}
+
+}
