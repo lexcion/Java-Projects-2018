@@ -41,5 +41,10 @@ public class LifePanel extends JPanel{
 		}
 	}
 
+	public void setCells(boolean[][] nextCells) {
+		// TODO Auto-generated method stub
+		cells = nextCells;
+	}
+
 
 }
