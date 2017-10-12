@@ -7,6 +7,10 @@ import javax.swing.JPanel;
 
 public class LifePanel extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4861952853351430680L;
 	boolean[][]cells;
 	double width;
 	double height;
@@ -20,7 +24,7 @@ public class LifePanel extends JPanel{
 		width = (double) this.getWidth() / cells[0].length;
 		height = (double ) this.getHeight() / cells.length;
 		
-		g.setColor(Color.BLUE);
+		g.setColor(Color.darkGray);
 		for (int row = 0; row < cells.length; row++) {
 			for(int column = 0; column < cells[0].length; column++){
 				if (cells[row][column]==true){
