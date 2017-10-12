@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 
 public class Life implements MouseListener, ActionListener, Runnable{
 	
-	boolean[][] cells = new boolean[100][100];
+	boolean[][] cells = new boolean[66][66];
 	JFrame frame = new JFrame("Life simulation");
 	LifePanel panel = new LifePanel(cells);
 	Container south = new Container();
@@ -76,7 +76,7 @@ public class Life implements MouseListener, ActionListener, Runnable{
 		// TODO Auto-generated method stub
 		System.out.println(event.getX() + ", " + event.getY());
 		double width = (double)panel.getWidth() / cells[0].length;
-		double height = (double)panel.getHeight() / cells[0].length;
+		double height = (double)panel.getHeight() / cells.length;
 		int column = (int)(event.getX() / width);
 		int row = (int)(event.getY()/height);
 		System.out.println(column + ", " + row);
@@ -92,30 +92,21 @@ public class Life implements MouseListener, ActionListener, Runnable{
 		}
 		if (event.getSource().equals(start)) {
 			System.out.println("start");
-			running = true;
+			running = false;
 			Thread t = new Thread(this);
 			t.start();
 		}
 		if (event.getSource().equals(stop)) {
-			running = false;
-		}
-	}
-
-	private void start() {
-		// TODO Auto-generated method stub
-		if (running == false) {
 			running = true;
-		while (running = true) {
-			step();
-		}
+			System.out.println("stop");
 		}
 	}
 
 	private void step() {
 		// TODO Auto-generated method stub
 		boolean[][] nextCells = new boolean [cells.length][cells[0].length];
-		for (int row = 0; row < cells.length; row++) {
-			for (int column = 0; column < cells[0].length; column++) {
+		for (int row = 1; row < cells.length; row++) {
+			for (int column = 1; column < cells[0].length; column++) {
 				int neighborCount = 0;
 				if (row > 0 && column > 0 && cells[row-1][column-1] == true) { //up left
 					neighborCount++;
@@ -123,42 +114,46 @@ public class Life implements MouseListener, ActionListener, Runnable{
 				if (row > 0 && cells[row-1][column] == true) { //up
 					neighborCount++;
 				}
-				if (row > 0 && column < cells[0].length - 1 &&cells[row][column] == true) { //right
+				if (column > 0 && column < cells[0].length - 1 &&cells[row][column+1] == true) { //right
 					neighborCount++;
 				}
 				if (column > 0 && cells[row][column-1] == true) { //left
 					neighborCount++;
 				}
-				if (column < cells.length - 1 && column < cells[0].length - 1 &&cells[row][column] == true) { //right
+				if (row < cells.length - 1 && column < cells[0].length - 1 && cells[row-1][column+1] == true) { //down right
 					neighborCount++;
 				}
 				if (row < cells.length - 1 && column > 0 && cells[row+1][column-1] == true) {
 					neighborCount++;
 				}
-				if (row < 0 && cells[row+1][column] == true) { //down
+				if (row < cells.length - 1 && cells[row+1][column] == true) { //down
 					neighborCount++;
 				}
-				if (row < cells.length - 1 && column < cells[0].length - 1 &&cells[row+1][column+1] == true) { //right
+				if (row < cells.length - 1 && column < cells[0].length - 1 &&cells[row+1][column+1] == true) { 
 					neighborCount++;
 				}
 				if (cells [row][column] == true) {
 					if (neighborCount == 2 || neighborCount == 3) {
 						nextCells[row][column] = true;
 						frame.repaint();
+						neighborCount = 0;
 					}
 					else {
 						nextCells[row][column] = false;
 						frame.repaint();
+						neighborCount = 0;
 					}
 				}
 				else {
-					if (neighborCount == 1) {
+					if (neighborCount ==  3) {
 						nextCells[row][column] = true;
 						frame.repaint();
+						neighborCount = 0;
 					}
 					else {
 						nextCells[row][column] = false;
 						frame.repaint();
+						neighborCount = 0;
 					}
 				}
 			}
@@ -172,15 +167,17 @@ public class Life implements MouseListener, ActionListener, Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while (running = true) {
-			step();
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (running != true) {
+		while (running != true) {
+				step();
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 		}
 	}
-
 }
+
