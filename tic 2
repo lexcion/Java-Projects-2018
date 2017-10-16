@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class TicTacToe {
 	
-	int[][] board = new int [3][3];
+	int[][] board = new int [4 ][4];
 	final int XTURN = 0;
 	final int OTURN = 1;
 	final int BLANK = 0;
@@ -22,7 +22,7 @@ public class TicTacToe {
 
 		scanner = new Scanner(System.in);
 		
-		while(playing == true && checkWinX() == false && checkWinY() == false && checkTie()== false){
+		while(playing == true && checkWinX(XMOVE) == false && checkWinY(OMOVE) == false && checkTie()== false){
 		printBoard();
 		input = scanner.nextLine();
 		if (input.length() !=2){
@@ -53,7 +53,7 @@ public class TicTacToe {
 			}
 		}
 		
-		if (checkWinX() == true){
+		if (checkWinX(XMOVE) == true){
 			printBoard();
 			Xwin += 1;
 			System.out.println("X WINS, X HAS WON " + Xwin + " TIMES AND O HAS WON " + Owin + " TIMES");
@@ -61,7 +61,7 @@ public class TicTacToe {
 			reTry();
 			}
 			
-		else if (checkWinY()==true){
+		if (checkWinY(OMOVE)==true){
 			printBoard();
 			Owin += 1;
 			System.out.println("O WINS, X HAS WON " + Xwin + " TIMES AND O HAS WON " + Owin + " TIMES");
@@ -87,67 +87,52 @@ public class TicTacToe {
 	
 
 	//TODO create checkWin and checkTie
-	boolean checkWinX (){
-		if (board[0][0] == XMOVE && board [0][1] == XMOVE && board [0][2] == XMOVE){
+	boolean checkWinX (int XMOVE){
+		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (board [i][j] == XMOVE && board [i][j+1] == XMOVE && board [i][j+2] == XMOVE) {
+					playing = false;
+					return true;
+				}
+			}
+		}
+		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (board [i][j] == XMOVE && board [i+1][j] == XMOVE && board [i+2][j] == XMOVE) {
+					playing = false;
+					return true;
+				}
+			}
+		}
+		
+		if (board[0][0] == XMOVE && board [1][1] == XMOVE && board [2][2] == XMOVE) {
 			playing = false;
 			return true;
 		}
-		if (board[0][0] == XMOVE && board[1][1]==XMOVE && board [2][2]==XMOVE){
-			playing = false;
-			return true;
-		}
-		if (board[0][0] == XMOVE && board[1][0]==XMOVE && board [2][0]==XMOVE){
-			playing = false;
-			return true;
-		}
-		if (board[1][0] == XMOVE && board[1][1]==XMOVE && board [1][2]==XMOVE){
-			playing = false;
-			return true;
-		}
-		if (board[2][0] == XMOVE && board[2][1]==XMOVE && board [2][2]==XMOVE){
-			playing = false;
-			return true;
-		}
-		if (board[0][1] == XMOVE && board[1][1]==XMOVE && board [2][1]==XMOVE){
-			playing = false;
-			return true;
-		}
-		if (board[0][2] == XMOVE && board[1][2]==XMOVE && board [2][2]==XMOVE){
-			playing = false;
-			return true;
-		}
-		if (board[2][0] == XMOVE && board[1][1]==XMOVE && board [0][2]==XMOVE){
-			playing = false;
-			return true;
-		}
+		
+		
 		return false;
 	}
 	
-	boolean checkWinY(){
-		if (board[0][0] == OMOVE && board [0][1] == OMOVE && board [0][2] == OMOVE)
-		{
-		return true;
-	}
-		if (board[0][0] == OMOVE && board[1][1]==OMOVE && board [2][2]==OMOVE){
-			return true;
+	public boolean checkWinY(int OMOVE) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (board [i][j] == OMOVE && board [i][j+1] == OMOVE && board [i][j+2] == OMOVE) {
+					playing = false;
+					return true;
+				}
+			}
 		}
-		if (board[0][0] == OMOVE && board[1][0]==OMOVE && board [2][0]==OMOVE){
-			return true;
-		}
-		if (board[1][0] == OMOVE && board[1][1]==OMOVE && board [1][2]==OMOVE){
-			return true;
-		}
-		if (board[2][0] == OMOVE && board[2][1]==OMOVE && board [2][2]==OMOVE){
-			return true;
-		}
-		if (board[0][1] == OMOVE && board[1][1]==OMOVE && board [2][1]==OMOVE){
-			return true;
-		}
-		if (board[0][2] == OMOVE && board[1][2]==OMOVE && board [2][2]==OMOVE){
-			return true;
-		}
-		if (board[2][0] == OMOVE && board[1][1]==OMOVE && board [0][2]==OMOVE){
-			return true;
+		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (board [i][j] == OMOVE && board [i+1][j] == OMOVE && board [i+2][j] == OMOVE) {
+					playing = false;
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -167,24 +152,26 @@ public class TicTacToe {
 		String YorN = scanner.nextLine();
 		if (YorN.equals("yes")|| YorN.equals ("y")){
 			System.out.println("Restarting...");
+			clearBoard();
 			playing = true;
 
 
 		}
 		else if(YorN.equals ("no") || YorN == "n"){
 			System.out.println("Restarting...");
+			clearBoard();
 			playing = true;
 			}
 		else {
-			System.out.println("Okay");
+			reTry();
 		}
 	}
 	
 	public void printBoard() {
 		System.out.println(" \t1\t2\t3");
 		for(int row = 0; row < board.length; row++){
-			String output = (char)('a' + row) + "\t";
-			for (int column = 0; column < board[0].length; column++){
+			String output = (char)('a' + (row )) + "\t";
+			for (int column = 0; column < board[0].length-1; column++){
 				if (board[row][column] == BLANK){
 					output += " \t";
 				}
@@ -202,7 +189,15 @@ public class TicTacToe {
 		
 		}
 	
-		
+	public void clearBoard() {
+		for (int row = 0; row < board.length; row++) {
+			for (int column = 0; column < board.length; column++){
+			board[row][column] = BLANK;
+			}
+		}
+		playing = true;
+		turn = XTURN;
+	}
 	
 
 	public static void main(String[] args) {
