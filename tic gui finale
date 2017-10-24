@@ -1,4 +1,4 @@
-package tictactoeGUI;
+package spaghet;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 public class GUITicTacToe implements ActionListener{ 
 	
+	//initializes all the variables used
 	JFrame frame = new JFrame();
 	JButton[][] button = new JButton[3][3];
 	int[][] board = new int [3][3];
@@ -43,6 +44,8 @@ public class GUITicTacToe implements ActionListener{
 	boolean playing = true;
 	
 	public GUITicTacToe(){
+		
+		//sets the frame size and shape
 
 		frame.setSize(400, 400);
 		frame.setLayout(new BorderLayout());
@@ -80,39 +83,54 @@ public class GUITicTacToe implements ActionListener{
 		new GUITicTacToe();
 
 	}
-	boolean checkWin (int player){
-		if (board[0][0] == player && 
-				board [1][1] == player && 
-				board [2][2] == player){
+	boolean checkWin (int thisMove){
+		if (board[0][0] == thisMove && 
+				board [1][1] == thisMove && 
+				board [2][2] == thisMove){
 			return true;
 		}
-		if (board[2][0] == player && 
-				board [1][1] == player && 
-				board [0][2] == player){
+		if (board[2][0] == thisMove && 
+				board [1][1] == thisMove && 
+				board [0][2] == thisMove){
 			return true;
 		}
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
-				if (board [i][j] == player && 
-				board [i+1][j] == player &&
-				board [i+2][j] == player){
-					return true;
-				}
-				if (board [i][j] == player && 
-					board [i][j+1] == player &&
-					board [i][j+2] == player){
-					return true;
-				}
+		
+			
+		for (int row=0; row<=2; row++)
+		{
+			if (board[row][0] ==thisMove && board[row][1]==thisMove && board[row][2]==thisMove) {
+				return true;
 			}
 		}
+		
+		for (int col=0; col<=2; col++)
+		{
+			if (board[0][col] ==thisMove && board[1][col]==thisMove && board[2][col]==thisMove) {
+				return true;
+			}
+		}
+		
 		return false;
+	}
+	
+	boolean checkTie(){
+		for(int row = 0; row < board.length; row++){
+			for (int column = 0; column < board [0].length; column ++)
+			{
+				if (board[row][column]==BLANK) {
+					return false;
+				}
+			}
+	}
+		return true;
 	}
 	
 	public void clearBoard() {
 		for (int a = 0; a < board.length; a++) {
 			for (int b = 0; b < board.length; b++) {
 				board[a][b]=BLANK;
-				button[a][b].setText("");;
+				
+				button[a][b].setText(a+","+b);
 				
 			}
 		}
@@ -128,16 +146,17 @@ public class GUITicTacToe implements ActionListener{
 				if (event.getSource().equals(button[j][i])){
 					gridButton = true;
 					current = button [j][i];
-					if(turn == XTURN){
+					if(turn == XTURN && board [j][i] == BLANK){
 						current.setText("X");
 						board [j][i] = XMOVE;
 						turn = OTURN;
 					}
-					else if (turn == OTURN){
+					else if (turn == OTURN && board [j][i] == BLANK){
 						current.setText("O");
 						board [j][i] = OMOVE;
 						turn = XTURN;
 					}
+			
 					if (checkWin(XMOVE) == true){
 						Xwin += 1;
 						xname.setText(Xname + " wins: "+ Xwin);
@@ -148,6 +167,9 @@ public class GUITicTacToe implements ActionListener{
 						oname.setText(Oname + " wins: "+ Owin);
 						clearBoard();
 						}
+					if (checkTie() == true) {
+						clearBoard();
+					}
 				}
 			}
 			
