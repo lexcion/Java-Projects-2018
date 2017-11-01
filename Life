@@ -1,5 +1,10 @@
-package conwaysLife;
+//Conways Life by Justin He
+//Creates a simulation of life, if a cell is colored in it is alive. If an alive cell has 2 or 3 neighbors
+//it stays alive, and dies from everything else. If a dead cell has 3 neighbors it will come back to life.
+//use step to move one generation, start to auto step generations, and stop to stop the auto step.
+package life;
 
+//imports packages
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -13,7 +18,9 @@ import javax.swing.JFrame;
 
 public class Life implements MouseListener, ActionListener, Runnable{
 	
-	boolean[][] cells = new boolean[66][66];
+	//initializes variables
+	
+	boolean[][] cells = new boolean[25][25];
 	JFrame frame = new JFrame("Life simulation");
 	LifePanel panel = new LifePanel(cells);
 	Container south = new Container();
@@ -23,6 +30,7 @@ public class Life implements MouseListener, ActionListener, Runnable{
 	boolean running = false;
 	
 	public Life (){
+		//creates JPanel and Buttons
 		frame.setSize(800,800);
 		frame.setLayout(new BorderLayout());
 		frame.add(panel, BorderLayout.CENTER);
@@ -42,38 +50,24 @@ public class Life implements MouseListener, ActionListener, Runnable{
 	}
 
 	public static void main(String[] args) {
-
 		new Life();
-
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
 	public void mouseExited(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
 	public void mousePressed(MouseEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
+
 	public void mouseReleased(MouseEvent event) {
-		// TODO Auto-generated method stub
+		// adds or deletes a cell when mouse is released under an area
 		System.out.println(event.getX() + ", " + event.getY());
 		double width = (double)panel.getWidth() / cells[0].length;
 		double height = (double)panel.getHeight() / cells.length;
@@ -86,6 +80,7 @@ public class Life implements MouseListener, ActionListener, Runnable{
 	}
 	
 	public void actionPerformed(ActionEvent event) {
+		//activates buttons when pressed
 		if (event.getSource().equals(step)) {
 			System.out.println("step");
 			step();
@@ -103,18 +98,20 @@ public class Life implements MouseListener, ActionListener, Runnable{
 	}
 
 	private void step() {
-		// TODO Auto-generated method stub
+		// moves one generation of cells, by scanning each cell to see how many neighbors it has and changing based on that
 		boolean[][] nextCells = new boolean [cells.length][cells[0].length];
-		for (int row = 1; row < cells.length; row++) {
-			for (int column = 1; column < cells[0].length; column++) {
+		for (int row = 0; row < cells.length; row++) {
+			for (int column = 0; column < cells[0].length; column++) {
 				int neighborCount = 0;
-				if (row > 0 && column > 0 && cells[row-1][column-1] == true) { //up left
+				
+			
+				if (row > 0 && column < cells[0].length - 1 && cells[row-1][column-1] == true) { //up left
 					neighborCount++;
 				}
 				if (row > 0 && cells[row-1][column] == true) { //up
 					neighborCount++;
 				}
-				if (column > 0 && column < cells[0].length - 1 &&cells[row][column+1] == true) { //right
+				if (column < cells[0].length - 1 &&cells[row][column+1] == true) { //right
 					neighborCount++;
 				}
 				if (column > 0 && cells[row][column-1] == true) { //left
@@ -132,28 +129,39 @@ public class Life implements MouseListener, ActionListener, Runnable{
 				if (row < cells.length - 1 && column < cells[0].length - 1 &&cells[row+1][column+1] == true) { 
 					neighborCount++;
 				}
+			
+				if(cells [0][column] == true) {
+					cells [0][column] = true;
+				}
+				if(cells [row][0]==true) {
+
+				}
+				if(cells [24][column] == true) {
+				
+				}
+				if(cells [row][24] == true) {
+					
+				}
+				//if a live cell has 2 or 3 neighbors it survives, and dies from anything else
 				if (cells [row][column] == true) {
-					if (neighborCount == 2 || neighborCount == 3) {
+					if (neighborCount == 3 || neighborCount == 2) {
 						nextCells[row][column] = true;
 						frame.repaint();
-						neighborCount = 0;
 					}
 					else {
 						nextCells[row][column] = false;
 						frame.repaint();
-						neighborCount = 0;
 					}
 				}
+				// if a dead cell has 3 neighbors it will become populated
 				else {
-					if (neighborCount ==  3) {
+					if (neighborCount == 3) {
 						nextCells[row][column] = true;
 						frame.repaint();
-						neighborCount = 0;
 					}
 					else {
 						nextCells[row][column] = false;
 						frame.repaint();
-						neighborCount = 0;
 					}
 				}
 			}
@@ -164,20 +172,17 @@ public class Life implements MouseListener, ActionListener, Runnable{
 
 	}
 
-	@Override
+	//automatically runs step, makes a step every 250 milliseconds or 0.25 seconds
 	public void run() {
-		// TODO Auto-generated method stub
 		if (running != true) {
 		while (running != true) {
 				step();
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
 		}
 	}
 }
-
