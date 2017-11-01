@@ -1,4 +1,5 @@
-package conwaysLife;
+//LifePanel sets the colors of the grid and cells
+package life;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,10 +8,7 @@ import javax.swing.JPanel;
 
 public class LifePanel extends JPanel{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4861952853351430680L;
+	private static final long serialVersionUID = 1L;
 	boolean[][]cells;
 	double width;
 	double height;
@@ -19,11 +17,14 @@ public class LifePanel extends JPanel{
 		cells = in;
 	}
 	
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		width = (double) this.getWidth() / cells[0].length;
-		height = (double ) this.getHeight() / cells.length;
+		width = ((double) this.getWidth() / cells[0].length);
+		height = ((double ) this.getHeight() / cells.length);
 		
+		
+		//colors the live cell
 		g.setColor(Color.darkGray);
 		for (int row = 0; row < cells.length; row++) {
 			for(int column = 0; column < cells[0].length; column++){
@@ -35,6 +36,7 @@ public class LifePanel extends JPanel{
 				}
 			}
 		}
+		//creates and sets color of grid
 		g.setColor(Color.BLACK);
 		for (int i = 0; i < cells[0].length+1; i++) {
 			g.drawLine((int)Math.round(i*width), 0, (int)Math.round(i*width), this.getHeight());
@@ -45,8 +47,8 @@ public class LifePanel extends JPanel{
 		}
 	}
 
+	//sets next cells generation
 	public void setCells(boolean[][] nextCells) {
-		// TODO Auto-generated method stub
 		cells = nextCells;
 	}
 
