@@ -1,0 +1,85 @@
+package test;
+
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+
+public class TesT {
+	Scanner consoleInput = new Scanner(System.in);
+	String input;
+	Scanner fileInput;
+	int[] inputArray;
+	
+	public TesT() {
+		System.out.println("Enter a number for which input file:");
+		System.out.println("1. input1 2. input2 3. input3 4. input4");
+				input = consoleInput.nextLine();
+		if (input.length() !=1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3' && input.charAt(0) != '4') {
+			System.out.println("Enter 1 to 4");
+			while (input.length() != 1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3' && input.charAt(0) != '4') {
+				input = consoleInput.nextLine();
+			}
+		}
+		try {
+			fileInput = new Scanner(new File("input" + input.charAt(0) + ".txt"));
+	} catch(FileNotFoundException ex) 
+		{ex.printStackTrace();
+		System.exit(0);
+	}
+		String infile = fileInput.nextLine();
+		String[] inputStringArray = infile.split(",");
+		inputArray = new int[inputStringArray.length];
+		for (int i = 0; i < inputStringArray.length; i++) {
+				inputArray[i] = Integer.parseInt(inputStringArray[i]);
+				System.out.println(inputArray[i]);
+		}
+		System.out.println("Enter the number for which sort");
+		System.out.println("1. Bubble 2. Selection 3. Table");
+		input = consoleInput.nextLine();
+		if (input.length( )!= 1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3' ) {
+			System.out.println("Enter 1, 2, or 3");
+			while(input.length() != 1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3') {
+				input = consoleInput.nextLine();
+			}
+		}
+		if (input.equals("1")) {
+			inputArray = bubbleSort(inputArray);
+		}
+		if (input.equals("2")) {
+			inputArray = selectionSort(inputArray);
+		}
+		}
+	
+
+	int[] bubbleSort(int[] array) {
+		System.out.println("laugh out LOUD");
+
+		return array;
+	}
+	
+	int[] selectionSort(int [] array) {
+		for (int j = 0; j < array.length; j++) {
+			int smallestNumber = array[j];
+			int smallestIndex = j;
+			for (int i = 0; i < array.length; i++) {
+				
+			}
+		}
+		return array;
+		}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new TesT();
+		int ans = 0;
+		if (ans == 0) {
+			System.out.println("niql");
+		}
+		else System.out.println(ans);
+
+
+	}
+
+}
