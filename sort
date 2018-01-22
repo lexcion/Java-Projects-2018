@@ -3,6 +3,9 @@ package test;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 
 public class TesT {
@@ -10,15 +13,18 @@ public class TesT {
 	String input;
 	Scanner fileInput;
 	int[] inputArray;
-	
+	long startTime;
 	public TesT() {
 		System.out.println("Enter a number for which input file:");
 		System.out.println("1. input1 2. input2 3. input3 4. input4");
 				input = consoleInput.nextLine();
 		if (input.length() !=1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3' && input.charAt(0) != '4') {
 			System.out.println("Enter 1 to 4");
-			while (input.length() != 1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3' && input.charAt(0) != '4') {
+			while (input.length() != 1 && input.charAt(0) != '1' && input.charAt(0) != '2' && input.charAt(0) != '3' && input.charAt(0) != '4' && input.charAt(0) != '5') {
 				input = consoleInput.nextLine();
+			}
+			if (input.equals("5")) {
+				System.out.println("fml honestly");
 			}
 		}
 		try {
@@ -43,12 +49,28 @@ public class TesT {
 				input = consoleInput.nextLine();
 			}
 		}
+		startTime = System.currentTimeMillis();
 		if (input.equals("1")) {
 			inputArray = bubbleSort(inputArray);
 		}
 		if (input.equals("2")) {
 			inputArray = selectionSort(inputArray);
 		}
+		if (input.equals("3")) {
+			inputArray = tableSort(inputArray);
+		}
+		long totalTime = System.currentTimeMillis() - startTime;
+		for (int i = 0; i < inputArray.length; i++) {
+			System.out.println(inputArray[i]);
+		}
+		
+		try {
+			PrintWriter pw = new PrintWriter( new FileWriter(new File("output.txt")));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(0);
+		}
+		
 		}
 	
 
@@ -68,16 +90,33 @@ public class TesT {
 		}
 		return array;
 		}
+	
+	int[] tableSort(int[] array) {
+		int[] tally = new int[1001];
+		for (int i = 0; i < tally.length; i++) {
+			tally[array[i]]++;
+		} 
+		int count = 0;
+		
+		for (int i = 0; i < tally.length; i++) {
+			
+			for (int j = 0; j < tally[i]; j++) {
+				array[count] = 1;
+				count++;
+				
+			}
+		}
+		
+		return array;
+		
+		
+	}
 
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new TesT();
 		int ans = 0;
-		if (ans == 0) {
-			System.out.println("niql");
-		}
-		else System.out.println(ans);
+		
 
 
 	}
