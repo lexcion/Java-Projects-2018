@@ -1,0 +1,52 @@
+//find which letter occurs the most
+
+package eee;
+
+import java.util.Scanner;
+
+public class Max {
+
+	public static void main(String[] args) {
+		
+		int arr[]= new int [26];
+		System.out.println("");
+		int test = 0;
+		Scanner scanner = new Scanner(System.in);
+		String input;
+		input = scanner.nextLine();
+		int dec = 0;
+		int max = 0;
+
+		
+		for(int w = 0; w < arr.length; w++) {
+			arr[w]=0;
+		}
+		
+		for(int i = 0; i<input.length(); i++) {
+			if(input.charAt(i)>='A' && input.charAt(i)<= 'Z') {
+				dec = (int)(input.charAt(i)-'A');
+				arr[dec]++;
+			}
+			else if(input.charAt(i)>='a' && input.charAt(i)<='z') {
+			dec = (int)(input.charAt(i)-'a');
+			arr[dec]++;
+			}
+			else {
+				
+			}
+		}
+		
+		for(int j = 0; j<arr.length; j++) {
+			if(arr[j]>arr[max]) {
+				max=j;
+
+			}
+		}
+		
+		char out = (char)(max+'a');
+
+		System.out.println(out+": " + arr[max]);
+
+	}
+
+}
