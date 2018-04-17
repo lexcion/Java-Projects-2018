@@ -1,0 +1,25 @@
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Color;
+
+public class Road extends JPanel{
+	
+	final int LANE_HEIGHT = 150;
+	
+	public Road() {
+		super();
+	}
+
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponents(g);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(Color.WHITE);
+		for (int i = LANE_HEIGHT; i < LANE_HEIGHT * 4; i=i+LANE_HEIGHT) {
+			for (int b = 0; b < getWidth(); b = b+40) {
+				g.fillRect(b,  i,  30,  5);
+			}
+		}
+	}
+}
