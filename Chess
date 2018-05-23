@@ -1,0 +1,109 @@
+
+//imports packages
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+
+public class Chess implements MouseListener,ActionListener,Runnable{
+
+	//initializes variables
+	boolean[][]highlight = new boolean[8][8];
+	
+	
+	boolean select = false;
+	
+	int[][] grid = new int[8][8];
+	JFrame frame = new JFrame("Chess");
+	ChessPanel panel = new ChessPanel(highlight);
+	Container south = new Container();
+	JButton reset = new JButton("Reset");
+
+	boolean running = false;
+	
+	public Chess() {
+		
+	
+			//creates JPanel and Buttons
+			frame.setSize(815,864);
+			frame.setLayout(new BorderLayout());
+			frame.add(panel, BorderLayout.CENTER);
+			panel.addMouseListener(this);
+			
+			south.setLayout(new GridLayout(1,3));
+			south.add(reset);
+			reset.addActionListener(this);
+			frame.add(south, BorderLayout.SOUTH);
+			
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+		}
+
+	
+	public static void main(String[] args) {
+		new Chess();
+		
+
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent event) {
+		// adds or deletes when mouse is released under an area
+
+			System.out.println(event.getX() + ", " + event.getY());
+				double width = (double)panel.getWidth() / grid[0].length;
+				double height = (double)panel.getHeight() / grid.length;
+				int column = (int)(event.getX() / width);
+				int row = (int)(event.getY()/height);
+				System.out.println(column + ", " + row);
+				highlight[row][column]= !highlight[row][column];
+			
+				frame.repaint();
+
+		
+			}
+	private void move(){
+		boolean[][] nextMove = new boolean [highlight.length][highlight[0].length];
+
+		highlight= nextMove;
+		panel.setMove(nextMove);
+		
+	}
+
+}
