@@ -6,11 +6,14 @@ import javax.swing.JPanel;
 public class ChessPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	boolean[][] cells;
+	boolean origMove[][];
+	
 	double width;
 	double height;
 
 	
 	public ChessPanel(boolean[][] highlight) {
+		
 		cells = highlight;
 	}
 
@@ -19,7 +22,7 @@ public class ChessPanel extends JPanel{
 		super.paintComponent(g);
 		width = ((double) this.getWidth() / cells[0].length);
 		height = ((double ) this.getHeight() / cells.length);
-		
+
 		
 	
 
@@ -28,7 +31,7 @@ public class ChessPanel extends JPanel{
 	
 			for (int j = 0; j<800;j+=200) {
 				for (int i = 0; i<800;i+=200) {
-					g.setColor(Color.GRAY);
+					g.setColor(Color.getHSBColor(36, 91, 24));
 					g.drawRect(i, j, 100, 100);
 					g.fillRect(i, j, 100, 100);
 				}
@@ -36,7 +39,7 @@ public class ChessPanel extends JPanel{
 			}
 			for (int j = 100; j<800;j+=200) {
 				for (int i = 100; i<800;i+=200) {
-					g.setColor(Color.GRAY);
+					g.setColor(Color.);
 					g.drawRect(i, j, 100, 100);
 					g.fillRect(i, j, 100, 100);
 				}
@@ -45,10 +48,11 @@ public class ChessPanel extends JPanel{
 	
 
 			//colors the selected square
-		
+			
 			g.setColor(Color.BLUE);
 			for (int row = 0; row < cells.length; row++) {
 				for(int column = 0; column < cells[0].length; column++){
+					
 					
 					
 					if (cells[row][column]==true) {
@@ -58,18 +62,48 @@ public class ChessPanel extends JPanel{
 							}
 							
 					}
-
-					
+						
 						g.setColor(Color.BLUE);
 						g.fillRect((int)Math.round(column*width),
 								(int)Math.round(row*height),
 								(int)width,
 								(int)height);
 				
-					
-					
+						for (int i = 0; i < 100000; i=i+100) {
+							g.setColor(Color.ORANGE);
+							g.fillRect((int)Math.round(column*width+i),
+									(int)Math.round(row*height+i),
+									(int)width,
+									(int)height);
+							g.setColor(Color.BLUE);
+							g.setColor(Color.ORANGE);
+							g.fillRect((int)Math.round(column*width-i),
+									(int)Math.round(row*height-i),
+									(int)width,
+									(int)height);
+							g.setColor(Color.BLUE);
+							g.setColor(Color.ORANGE);
+							g.fillRect((int)Math.round(column*width+i),
+									(int)Math.round(row*height-i),
+									(int)width,
+									(int)height);
+							g.setColor(Color.BLUE);
+							g.setColor(Color.ORANGE);
+							g.fillRect((int)Math.round(column*width-i),
+									(int)Math.round(row*height+i),
+									(int)width,
+									(int)height);
+						}
+						g.setColor(Color.BLUE);
 						
+						g.fillRect((int)Math.round(column*width),
+								(int)Math.round(row*height),
+								(int)width,
+								(int)height);
+				
 					}
+						
+					
 					
 				}
 
