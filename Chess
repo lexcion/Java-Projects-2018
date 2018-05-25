@@ -30,7 +30,7 @@ public class Chess implements MouseListener,ActionListener,Runnable{
 	
 	public Chess() {
 		
-	
+		
 			//creates JPanel and Buttons
 			frame.setSize(815,864);
 			frame.setLayout(new BorderLayout());
@@ -85,6 +85,7 @@ public class Chess implements MouseListener,ActionListener,Runnable{
 	@Override
 	public void mouseReleased(MouseEvent event) {
 		// adds or deletes when mouse is released under an area
+		
 
 			System.out.println(event.getX() + ", " + event.getY());
 				double width = (double)panel.getWidth() / grid[0].length;
@@ -93,17 +94,20 @@ public class Chess implements MouseListener,ActionListener,Runnable{
 				int row = (int)(event.getY()/height);
 				System.out.println(column + ", " + row);
 				highlight[row][column]= !highlight[row][column];
-			
+				
 				frame.repaint();
 
-		
 			}
 	private void move(){
-		boolean[][] nextMove = new boolean [highlight.length][highlight[0].length];
-
-		highlight= nextMove;
-		panel.setMove(nextMove);
 		
+		boolean[][] nextMove = new boolean [highlight.length][highlight[0].length];
+	
+					highlight= nextMove;
+					panel.setMove(nextMove);
+			
+			
+		
+	
 	}
 
 }
