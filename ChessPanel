@@ -23,6 +23,7 @@ public class ChessPanel extends JPanel{
 	static int selectedCol = -1;
 	static int moveToRow = -1;
 	static int moveToCol = -1;
+	static int endOfMove = 1; 
 	
 	Image myimage;
 	static double width;
@@ -404,8 +405,9 @@ public class ChessPanel extends JPanel{
 					
 					// if it is a Rook
 					if(gridpiece[column][row]==ROOK) {
-						g.setColor(highlight);
-						g.drawRect((int)Math.round(column*width),
+						if (endOfMove == 0)
+						{ g.setColor(highlight);
+						  g.drawRect((int)Math.round(column*width),
 								(int)Math.round(row*height),
 								(int)width,
 								(int)height);
@@ -478,6 +480,7 @@ public class ChessPanel extends JPanel{
 							}	
 						}
 						
+						} // check for endOfMove
 					}
 					
 					
@@ -572,32 +575,38 @@ public class ChessPanel extends JPanel{
 			 
 			selectedRow = row;
 			selectedCol = column;
+			endOfMove =0; 
 			System.out.println("this is a pawn");
 			
 		}
 		if(gridpiece[column][row]==KNIGHT) {
 			selectedRow = row;
 			selectedCol = column;
+			endOfMove =0; 
 			System.out.println("knight");
 		}
 		if(gridpiece[column][row]==BISHOP) {
 			selectedRow = row;
 			selectedCol = column;
+			endOfMove =0; 
 			System.out.println("bishop");
 		}
 		if(gridpiece[column][row]==QUEEN) {
 			selectedRow = row;
 			selectedCol = column;
+			endOfMove =0; 
 			System.out.println("queen");
 		}
 		if(gridpiece[column][row]==KING) {
 			selectedRow = row;
 			selectedCol = column;
+			endOfMove =0; 
 			System.out.println("king");
 		}
 		if(gridpiece[column][row]==ROOK) {
 			selectedRow = row;
 			selectedCol = column;
+			endOfMove =0; 
 			System.out.println("rook");
 		}
 		if(gridpiece[column][row]==EMPTY) {
@@ -606,6 +615,7 @@ public class ChessPanel extends JPanel{
 		if(gridpiece[column][row]==MOVE) {
 			moveToRow = row;
 			moveToCol = column;
+			
 			System.out.println("move");
 			System.out.println("move from " + selectedRow + "," + selectedCol + " to " + moveToRow + "," + moveToCol);
 			
@@ -615,6 +625,7 @@ public class ChessPanel extends JPanel{
 			   gridpiece[selectedCol][selectedRow] = EMPTY;
 			   selectedCol = -1;
 			   selectedRow = -1;
+			   endOfMove = 1; 
 			}
 		}
 	}
