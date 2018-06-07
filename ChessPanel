@@ -15,7 +15,7 @@ public class ChessPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	static boolean[][] cells;
 	static int[][] gridpiece;  // for what is in each grid; ROOK. PAWN, BISHIP, KNIGHT, etc
-	int[][] gridcolor;  
+	static int[][] gridcolor;  
 	int origMove;
 	int origColor;
 	int clickCount =0;
@@ -131,25 +131,39 @@ public class ChessPanel extends JPanel{
 								(int)width,
 								(int)height);
 					
-						for (int i = 100; i < 100000; i=i+100) {
+						for (int i = 1; i < 100; i=i+1) {
 							g.setColor(highlight);
-							g.fillRect((int)Math.round(column*width+i),
-									(int)Math.round(row*height+i),
+							if(column+i<8&&row+i<8&&column+i>-1&&row+i>-1&&gridpiece[column+i][row+i] == EMPTY) {
+							g.fillRect((int)Math.round(column*width+i*100),
+									(int)Math.round(row*height+i*100),
 									(int)width,
 									(int)height);
-							
-							g.fillRect((int)Math.round(column*width-i),
-									(int)Math.round(row*height-i),
+							gridpiece[column+i][row+i] = MOVE;
+							}
+							if(column-i<8&&row-i<8&&column-i>-1&&row-i>-1&&gridpiece[column-i][row-i] == EMPTY) {
+							g.fillRect((int)Math.round(column*width-i*100),
+									(int)Math.round(row*height-i*100),
 									(int)width,
 									(int)height);
-							g.fillRect((int)Math.round(column*width+i),
-									(int)Math.round(row*height-i),
+		
+							gridpiece[column-i][row-i] = MOVE;
+							}
+							if(column+i<8&&row-i<8&&column+i>-1&&row-i>-1&&gridpiece[column+i][row-i] == EMPTY) {
+							g.fillRect((int)Math.round(column*width+i*100),
+									(int)Math.round(row*height-i*100),
 									(int)width,
 									(int)height);
-							g.fillRect((int)Math.round(column*width-i),
-									(int)Math.round(row*height+i),
+						
+							gridpiece[column+i][row-i] = MOVE;
+							}
+							if(column-i<8&&row+i<8&&column-i>-1&&row+i>-1&&gridpiece[column-i][row+i] == EMPTY) {
+								gridpiece[column-i][row+i] = MOVE;
+							g.fillRect((int)Math.round(column*width-i*100),
+									(int)Math.round(row*height+i*100),
 									(int)width,
 									(int)height);
+						
+							}
 						}
 					
 				
@@ -185,21 +199,27 @@ public class ChessPanel extends JPanel{
 		*/
 						g.setColor(highlight);
 						if(gridcolor[column][row]==WHITE) {
+						
+							if(gridpiece[column][row-2]==EMPTY)
+								if(row-2<8&&row-2>=0)
 						g.fillRect((int)Math.round(column*width),
 								(int)Math.round(row*height-200),
 								(int)width,
 								(int)height);
-					
+					System.out.println("teststs");
 						gridpiece[column][row-2] = MOVE;
 						}
 						if(gridcolor[column][row]==BLACK) {
+							if(gridpiece[column][row+2]==EMPTY)
+								if(row+2<8&&row+2>=0)
 							g.fillRect((int)Math.round(column*width),
 									(int)Math.round(row*height+200),
 									(int)width,
 									(int)height);
 						gridpiece[column][row+2] = MOVE;
 						
-							}					
+							}				
+						
 					}
 					
 					if(gridpiece[column][row]==KING) {
@@ -263,42 +283,125 @@ public class ChessPanel extends JPanel{
 					}
 					
 					if(gridpiece[column][row]==QUEEN) {	
-						for (int i = 100; i < 100000; i=i+100) {
+						if (endOfMove == 0)
+						{ g.setColor(highlight);
+						  g.drawRect((int)Math.round(column*width),
+								(int)Math.round(row*height),
+								(int)width,
+								(int)height);
+				
+						int blocked =0; 
+						// go row + i (right)
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
 							g.setColor(highlight);
-							g.fillRect((int)Math.round(column*width+i),
-									(int)Math.round(row*height+i),
+							if (row+i <8 && gridpiece[column][row+i] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width),
+									(int)Math.round(row*height+i*100),
 									(int)width,
 									(int)height);
-							g.fillRect((int)Math.round(column*width-i),
-									(int)Math.round(row*height+i),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width+i),
-									(int)Math.round(row*height-i),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width-i),
-									(int)Math.round(row*height-i),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width),
-									(int)Math.round(row*height+i),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width),
-									(int)Math.round(row*height-i),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width+i),
-									(int)Math.round(row*height),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width-i),
-									(int)Math.round(row*height),
-									(int)width,
-									(int)height);
+							    
+								gridpiece[column][row+i] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
 						}
-					}
+						
+						// go row -i (left)
+						blocked =0;
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
+							g.setColor(highlight);
+							if (row-i >=0 && gridpiece[column][row-i] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width),
+									(int)Math.round(row*height - i*100),
+									(int)width,
+									(int)height);
+							    
+								gridpiece[column][row-i] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
+						}
+						
+						// go column +i (down)
+						blocked =0;
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
+							g.setColor(highlight);
+							if (column + i <8 && gridpiece[column+i][row] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width + i*100),
+									(int)Math.round(row*height),
+									(int)width,
+									(int)height);
+							    
+								gridpiece[column+i][row] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
+						}
+						
+						// go column -i (up)
+						blocked =0;
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
+							g.setColor(highlight);
+							if (column - i >=0 && gridpiece[column-i][row] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width - i*100),
+									(int)Math.round(row*height),
+									(int)width,
+									(int)height);
+							    
+								gridpiece[column-i][row] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
+						}
+						
+						}
+						g.setColor(highlight);
+						g.drawRect((int)Math.round(column*width),
+								(int)Math.round(row*height),
+								(int)width,
+								(int)height);
+					
+						for (int i = 1; i < 100; i=i+1) {
+							g.setColor(highlight);
+							if(column+i<8&&row+i<8&&column+i>-1&&row+i>-1&&gridpiece[column+i][row+i] == EMPTY) {
+							g.fillRect((int)Math.round(column*width+i*100),
+									(int)Math.round(row*height+i*100),
+									(int)width,
+									(int)height);
+							gridpiece[column+i][row+i] = MOVE;
+							}
+							if(column-i<8&&row-i<8&&column-i>-1&&row-i>-1&&gridpiece[column-i][row-i] == EMPTY) {
+							g.fillRect((int)Math.round(column*width-i*100),
+									(int)Math.round(row*height-i*100),
+									(int)width,
+									(int)height);
+		
+							gridpiece[column-i][row-i] = MOVE;
+							}
+							if(column+i<8&&row-i<8&&column+i>-1&&row-i>-1&&gridpiece[column+i][row-i] == EMPTY) {
+							g.fillRect((int)Math.round(column*width+i*100),
+									(int)Math.round(row*height-i*100),
+									(int)width,
+									(int)height);
+						
+							gridpiece[column+i][row-i] = MOVE;
+							}
+							if(column-i<8&&row+i<8&&column-i>-1&&row+i>-1&&gridpiece[column-i][row+i] == EMPTY) {
+								gridpiece[column-i][row+i] = MOVE;
+							g.fillRect((int)Math.round(column*width-i*100),
+									(int)Math.round(row*height+i*100),
+									(int)width,
+									(int)height);
+						
+							}
+						}
+					
+						}
+					
 					if(gridpiece[column][row]==MOVE) {
 					/*
 					if(gridpiece[column][row+2]==PAWN){
@@ -349,56 +452,56 @@ public class ChessPanel extends JPanel{
 									(int)Math.round(row*height+100),
 									(int)width,
 									(int)height);
-							if(column<6&row<7) {
+							if(column-2<8&&row+1<8&&column-2>-1&&row+1>-1&&gridpiece[column-2][row+1] == EMPTY) {
 							gridpiece[column-2][row+1] = MOVE;
 							}
 							g.fillRect((int)Math.round(column*width-200),
 									(int)Math.round(row*height-100),
 									(int)width,
 									(int)height);
-							if(column<6&row<7) {
+							if(column-2<8&&row-1<8&&column-2>-1&&row-1>-1&&gridpiece[column-2][row-1] == EMPTY) {
 							gridpiece[column-2][row-1] = MOVE;
 							}
 							g.fillRect((int)Math.round(column*width+200),
 									(int)Math.round(row*height-100),
 									(int)width,
 									(int)height);
-							if(column<6&row<7) {
+							if(column+2<8&&row-1<8&&column+2>-1&&row-1>-1&&gridpiece[column+2][row-1] == EMPTY) {
 							gridpiece[column+2][row-1] = MOVE;
 							}
 							g.fillRect((int)Math.round(column*width+200),
 									(int)Math.round(row*height+100),
 									(int)width,
 									(int)height);
-							if(column<6&row<7) {
+							if(column+2<8&&row+1<8&&column+2>-1&&row+1>-1&&gridpiece[column+2][row+1] == EMPTY) {
 							gridpiece[column+2][row+1] = MOVE;
 							}
 							g.fillRect((int)Math.round(column*width+100),
 									(int)Math.round(row*height-200),
 									(int)width,
 									(int)height);
-							if(column<7&row<6) {
+							if(column+1<8&&row-2<8&&column+1>-1&&row-2>-1&&gridpiece[column+1][row-2] == EMPTY) {
 							gridpiece[column+1][row-2] = MOVE;
 							}
 							g.fillRect((int)Math.round(column*width+100),
 									(int)Math.round(row*height+200),
 									(int)width,
 									(int)height);
-							if(column<7&row<6) {
+							if(column+1<8&&row+2<8&&column+1>-1&&row+2>-1&&gridpiece[column+1][row+2] == EMPTY) {
 							gridpiece[column+1][row+2] = MOVE;
 							}
 							g.fillRect((int)Math.round(column*width-100),
 									(int)Math.round(row*height+200),
 									(int)width,
 									(int)height);
-						if(column<7&row<6) {
+						if(column-1<8&&row+2<8&&column-1>-1&&row+2>-1&&gridpiece[column-1][row+2] == EMPTY) {
 							gridpiece[column-1][row+2] = MOVE;
 						}
 							g.fillRect((int)Math.round(column*width-100),
 									(int)Math.round(row*height-200),
 									(int)width,
 									(int)height);
-							if(column<7 && row<6) {
+							if(column-1<7 && row-2<6&&column-1>-1&&row-2>-1&&gridpiece[column-1][row-2] == EMPTY) {
 							gridpiece[column-1][row-2] = MOVE;
 							}
 				}
@@ -499,7 +602,8 @@ public class ChessPanel extends JPanel{
 					}
 				}
 				}
-			}
+}
+
 	
 					
 			
@@ -520,44 +624,44 @@ public class ChessPanel extends JPanel{
 				if (gridpiece[i][j] == ROOK) {
 					// draw ROOK at (i,j)
 					if (gridcolor[i][j] == BLACK) 
-					   drawPiece(g, "rookB.jpg", (int)(i*width), (int)(j*height)); 
+					   drawPiece(g, "rookB.png", (int)(i*width), (int)(j*height)); 
 					else
-					   drawPiece(g, "rookW.jpg", (int)(i*width), (int)(j*height)); 
+					   drawPiece(g, "rookW.png", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == KNIGHT) {
 					// draw KNIGHT in the cell (i,j)
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "knightB.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "knightB.png", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "knightW.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "knightW.png", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == BISHOP) {
 					// draw BISHOP in the cell (i,j)
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "bishopB.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "bishopB.png", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "bishopW.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "bishopW.png", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == QUEEN) {
 					// draw queue
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "queenB.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "queenB.png", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "queenW.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "queenW.png", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == KING) {
 					// draw the KING
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "kingB.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "kingB.png", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "kingW.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "kingW.png", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == PAWN) {
 					// draw the pawn
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "pawnB.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "pawnB.png", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "pawnW.jpg", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "pawnW.png", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == EMPTY) {
 					
@@ -572,12 +676,10 @@ public class ChessPanel extends JPanel{
 	public static void selectPiece(int row, int column) {
 		
 		if(gridpiece[column][row]==PAWN) {
-			 
 			selectedRow = row;
 			selectedCol = column;
 			endOfMove =0; 
 			System.out.println("this is a pawn");
-			
 		}
 		if(gridpiece[column][row]==KNIGHT) {
 			selectedRow = row;
@@ -620,12 +722,15 @@ public class ChessPanel extends JPanel{
 			System.out.println("move from " + selectedRow + "," + selectedCol + " to " + moveToRow + "," + moveToCol);
 			
 			// do the move: swap the 2 grid 
-			if (selectedRow>=0 && selectedCol>=0)
-			{  gridpiece[moveToCol][moveToRow] = gridpiece[selectedCol][selectedRow];
+			if (selectedRow>=0 && selectedCol>=0 && selectedRow<8 && selectedCol< 8)
+			{ 
+				gridpiece[moveToCol][moveToRow] = gridpiece[selectedCol][selectedRow];
+				gridcolor[moveToCol][moveToRow]=gridcolor[selectedCol][selectedRow];
 			   gridpiece[selectedCol][selectedRow] = EMPTY;
 			   selectedCol = -1;
 			   selectedRow = -1;
 			   endOfMove = 1; 
+		
 			}
 		}
 	}
