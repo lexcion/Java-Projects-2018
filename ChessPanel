@@ -18,6 +18,12 @@ public class ChessPanel extends JPanel{
 	int[][] gridcolor;  
 	int origMove;
 	int origColor;
+	int clickCount =0;
+	static int selectedRow = -1;
+	static int selectedCol = -1;
+	static int moveToRow = -1;
+	static int moveToCol = -1;
+	
 	Image myimage;
 	static double width;
 	static double height;
@@ -26,7 +32,7 @@ public class ChessPanel extends JPanel{
 	static Color customColor3 = new Color(6,127,26);
 	Color highlight = new Color(1f,0f,0f,.5f);
 	// define constants
-		final static int EMPTY =0;
+		final static int EMPTY = 0;
 		final static int PAWN  = 1;
 		final static int BISHOP =2;
 		final static int ROOK   =3;
@@ -100,20 +106,22 @@ public class ChessPanel extends JPanel{
 			
 			//colors the selected square
 
-			
 			g.setColor(customColor3);
 			for (int row = 0; row < cells.length; row++) {
 				for(int column = 0; column < cells[0].length; column++){
 					
 					if (cells[row][column]==true) {
 						for(int i =0;i<8;i++) {
-							for(int j  =0;j<8;j++) {
+							for(int j =0;j<8;j++) {
 								cells[i][j]=false;
 							}
 							
 					}
 					int origCol = column;
 					int	origRow = row;
+				
+					clickCount++;
+					System.out.println("click count: " + clickCount);
 					
 					if(gridpiece[column][row]==BISHOP) {
 						g.setColor(highlight);
@@ -148,7 +156,7 @@ public class ChessPanel extends JPanel{
 					 
 
 					if(gridpiece[column][row]==PAWN) {
-					
+					/*
 						 ByteArrayOutputStream baos = new ByteArrayOutputStream();
 						    PrintStream ps = new PrintStream(baos);
 						    PrintStream b = System.out;
@@ -173,7 +181,7 @@ public class ChessPanel extends JPanel{
 						    
 						  System.out.println(baos.toString());
 						  System.out.println(caos.toString());
-		
+		*/
 						g.setColor(highlight);
 						if(gridcolor[column][row]==WHITE) {
 						g.fillRect((int)Math.round(column*width),
@@ -190,8 +198,7 @@ public class ChessPanel extends JPanel{
 									(int)height);
 						gridpiece[column][row+2] = MOVE;
 						
-							}
-						
+							}					
 					}
 					
 					if(gridpiece[column][row]==KING) {
@@ -292,28 +299,40 @@ public class ChessPanel extends JPanel{
 						}
 					}
 					if(gridpiece[column][row]==MOVE) {
-					
-					if(gridpiece[origCol][origRow]==PAWN){
+					/*
+					if(gridpiece[column][row+2]==PAWN){
 							System.out.println("pawnM");
-							if(gridcolor[origCol][origRow]==WHITE) {
+							if(gridcolor[column][row+2]==WHITE) {
 							gridpiece[column][row]=PAWN;
-							gridpiece[origCol][origRow]=EMPTY;
+							gridpiece[column][row+2]=EMPTY;
 							gridcolor[column][row]=WHITE;
 							drawBoard(g);
 							}
-							if(gridcolor[origCol][origRow]==BLACK) {
+							
+							if(gridcolor[column][row-2]==BLACK) {
 								gridpiece[column][row]=PAWN;
-								gridpiece[origRow][origCol]=EMPTY;
-								gridcolor[column][row]=WHITE;
+								gridpiece[column][row-2]=EMPTY;
+								gridcolor[column][row]=BLACK;
 								drawBoard(g);
 							}
 						}
+
+					if(gridpiece[column][row-2]==PAWN){
+							if(gridcolor[column][row-2]==BLACK) {
+								gridpiece[column][row]=PAWN;
+								gridpiece[column][row-2]=EMPTY;
+								gridcolor[column][row]=BLACK;
+								drawBoard(g);
+							}
+						}
+						
 						if(gridpiece[column][row]==KING){
 								gridpiece[column][row]=KING;
 								gridpiece[column][row]=EMPTY;
 								gridcolor[column][row]=WHITE;
 								drawBoard(g);
 						}
+						*/
 						Chess.frame.repaint();
 					}
 					if(gridpiece[column][row]==KNIGHT) {
@@ -378,11 +397,12 @@ public class ChessPanel extends JPanel{
 									(int)Math.round(row*height-200),
 									(int)width,
 									(int)height);
-							if(column<7&row<6) {
+							if(column<7 && row<6) {
 							gridpiece[column-1][row-2] = MOVE;
 							}
 				}
 					
+					// if it is a Rook
 					if(gridpiece[column][row]==ROOK) {
 						g.setColor(highlight);
 						g.drawRect((int)Math.round(column*width),
@@ -390,28 +410,78 @@ public class ChessPanel extends JPanel{
 								(int)width,
 								(int)height);
 				
-						for (int i = 100; i < 100000; i=i+100) {
+						int blocked =0; 
+						// go row + i (right)
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
 							g.setColor(highlight);
-							g.fillRect((int)Math.round(column*width),
-									(int)Math.round(row*height+i),
+							if (row+i <8 && gridpiece[column][row+i] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width),
+									(int)Math.round(row*height+i*100),
 									(int)width,
 									(int)height);
-							g.fillRect((int)Math.round(column*width),
-									(int)Math.round(row*height-i),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width+i),
-									(int)Math.round(row*height),
-									(int)width,
-									(int)height);
-							g.fillRect((int)Math.round(column*width-i),
-									(int)Math.round(row*height),
-									(int)width,
-									(int)height);
+							    
+								gridpiece[column][row+i] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
 						}
+						
+						// go row -i (left)
+						blocked =0;
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
+							g.setColor(highlight);
+							if (row-i >=0 && gridpiece[column][row-i] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width),
+									(int)Math.round(row*height - i*100),
+									(int)width,
+									(int)height);
+							    
+								gridpiece[column][row-i] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
+						}
+						
+						// go column +i (down)
+						blocked =0;
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
+							g.setColor(highlight);
+							if (column + i <8 && gridpiece[column+i][row] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width + i*100),
+									(int)Math.round(row*height),
+									(int)width,
+									(int)height);
+							    
+								gridpiece[column+i][row] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
+						}
+						
+						// go column -i (up)
+						blocked =0;
+						for (int i = 1; i < 8 && blocked==0 ; i++) {
+							g.setColor(highlight);
+							if (column - i >=0 && gridpiece[column-i][row] == EMPTY) { 
+								g.fillRect((int)Math.round(column*width - i*100),
+									(int)Math.round(row*height),
+									(int)width,
+									(int)height);
+							    
+								gridpiece[column-i][row] = MOVE;
+							}
+							else {
+								blocked = 1;
+							}	
+						}
+						
+					}
 					
 					
-				}
+					// clean up empty and MOVE
 					if(gridpiece[column][row]==EMPTY) {
 						for (int i = 0; i < 8; i++) {
 							for (int j = 0; j < 8; j++) {
@@ -447,44 +517,44 @@ public class ChessPanel extends JPanel{
 				if (gridpiece[i][j] == ROOK) {
 					// draw ROOK at (i,j)
 					if (gridcolor[i][j] == BLACK) 
-					   drawPiece(g, "rookB.png", (int)(i*width), (int)(j*height)); 
+					   drawPiece(g, "rookB.jpg", (int)(i*width), (int)(j*height)); 
 					else
-					   drawPiece(g, "rookW.png", (int)(i*width), (int)(j*height)); 
+					   drawPiece(g, "rookW.jpg", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == KNIGHT) {
 					// draw KNIGHT in the cell (i,j)
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "knightB.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "knightB.jpg", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "knightW.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "knightW.jpg", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == BISHOP) {
 					// draw BISHOP in the cell (i,j)
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "bishopB.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "bishopB.jpg", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "bishopW.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "bishopW.jpg", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == QUEEN) {
 					// draw queue
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "queenB.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "queenB.jpg", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "queenW.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "queenW.jpg", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == KING) {
 					// draw the KING
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "kingB.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "kingB.jpg", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "kingW.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "kingW.jpg", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == PAWN) {
 					// draw the pawn
 					if (gridcolor[i][j] == BLACK) 
-						   drawPiece(g, "pawnB.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "pawnB.jpg", (int)(i*width), (int)(j*height)); 
 						else
-						   drawPiece(g, "pawnW.png", (int)(i*width), (int)(j*height)); 
+						   drawPiece(g, "pawnW.jpg", (int)(i*width), (int)(j*height)); 
 				}
 				if (gridpiece[i][j] == EMPTY) {
 					
@@ -496,36 +566,56 @@ public class ChessPanel extends JPanel{
 	}
 	
 	
-				
-			
-			
-	
 	public static void selectPiece(int row, int column) {
 		
 		if(gridpiece[column][row]==PAWN) {
-			System.out.println("pawn");
+			 
+			selectedRow = row;
+			selectedCol = column;
+			System.out.println("this is a pawn");
 			
 		}
 		if(gridpiece[column][row]==KNIGHT) {
+			selectedRow = row;
+			selectedCol = column;
 			System.out.println("knight");
 		}
 		if(gridpiece[column][row]==BISHOP) {
+			selectedRow = row;
+			selectedCol = column;
 			System.out.println("bishop");
 		}
 		if(gridpiece[column][row]==QUEEN) {
+			selectedRow = row;
+			selectedCol = column;
 			System.out.println("queen");
 		}
 		if(gridpiece[column][row]==KING) {
+			selectedRow = row;
+			selectedCol = column;
 			System.out.println("king");
 		}
 		if(gridpiece[column][row]==ROOK) {
+			selectedRow = row;
+			selectedCol = column;
 			System.out.println("rook");
 		}
 		if(gridpiece[column][row]==EMPTY) {
 			System.out.println("empty");
 		}
 		if(gridpiece[column][row]==MOVE) {
+			moveToRow = row;
+			moveToCol = column;
 			System.out.println("move");
+			System.out.println("move from " + selectedRow + "," + selectedCol + " to " + moveToRow + "," + moveToCol);
+			
+			// do the move: swap the 2 grid 
+			if (selectedRow>=0 && selectedCol>=0)
+			{  gridpiece[moveToCol][moveToRow] = gridpiece[selectedCol][selectedRow];
+			   gridpiece[selectedCol][selectedRow] = EMPTY;
+			   selectedCol = -1;
+			   selectedRow = -1;
+			}
 		}
 	}
 	public void initBoard() {
