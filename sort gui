@@ -1,0 +1,155 @@
+package javapeeepe;
+
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+public class Main extends JPanel implements ActionListener
+{
+	JFrame frame = new JFrame();
+	
+	JTextField input = new JTextField("test.txt");
+	JTextField output = new JTextField("output: ");
+	JButton confirm = new JButton("Sort File");
+	Container south = new Container();
+    File file = new File("");
+    Scanner fileInput = null;
+    ArrayList<Double> numStorage = new ArrayList <Double>();
+    String out = "";
+    double [] inputArray;
+  
+ public Main() {
+	
+ 
+    frame.setSize(300,200);
+	frame.setLayout(new BorderLayout());
+	frame.add(input, BorderLayout.NORTH);
+	frame.add(output, BorderLayout.CENTER);
+	frame.add(south, BorderLayout.SOUTH);
+	south.setLayout(new GridLayout(1,2));
+	south.add(confirm);
+	confirm.addActionListener(this);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.setVisible(true);
+	
+
+ }
+ class Panel extends JPanel{
+	 Panel(){
+		 
+	 }
+ }
+ 
+  public static void main(String[] args) {
+  new Main();
+  }
+
+@Override
+public void actionPerformed(ActionEvent arg0) {
+	// TODO Auto-generated method stub
+	  double total=0;
+	  double avg=0;
+	  double counter=0;
+	  double med=0;
+	  String out = "";
+
+	  for(int i = 0; i<numStorage.size(); i++) {
+		  numStorage.remove(i);
+	  }
+	if (arg0.getSource()==confirm) {
+		try {
+			fileInput = new Scanner(new File(input.getText()));
+			String infile = fileInput.nextLine();
+			String[] inputStringArray = infile.split(",");
+			inputArray = new double [inputStringArray.length];
+			for (int i = 0; i < inputStringArray.length; i++) {
+					inputArray[i] = Double.parseDouble(inputStringArray[i]);
+				
+					
+					total = inputArray[i] + total;
+					counter++;
+				
+					
+			
+			}
+			selectionSort(inputArray);
+			
+			for(int i=0; i<inputArray.length; i++) {
+				if(i<inputArray.length-1) 
+				{out = out + inputArray[i]+",";}
+				if(i==inputArray.length-1)
+				{out = out + inputArray[i];}
+			}
+		
+			output.setText("output: "+ out);
+		
+		    for(int i = 0; i<numStorage.size(); i++) {
+				numStorage.remove(i);
+			}
+			total = total/counter;
+			
+			
+				frame.repaint();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+	
+			System.out.println("invalid file");
+		}
+		
+		PrintWriter pw;
+		
+		//makes an output.txt with sorted numbers and total time taken
+			try {
+				pw = new PrintWriter( new FileWriter(new File("output.txt")));
+				String output = "";
+				for (int i =0; i< inputArray.length; i++) {
+				
+					output = output + inputArray[i] + ",";
+				}
+				pw.write(output);;
+				pw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				System.exit(0);
+			}
+			
+			}
+	
+	}
+double[] selectionSort(double[] inputArray2) {
+	for (int j = 0; j < inputArray2.length; j++) {
+		double smallestNumber = inputArray2[j];
+		int smallestIndex = j;
+		for (int i = j; i < inputArray2.length; i++) {
+		
+				if(inputArray2[i] < smallestNumber) {
+					smallestNumber = inputArray2[i];
+					smallestIndex = i;
+				}
+		}
+			double temp = inputArray2[smallestIndex];
+			inputArray2[smallestIndex] = inputArray2[j];
+			inputArray2[j] = temp;
+	}
+	return inputArray2;
+	}
+
+   
+}
+  
